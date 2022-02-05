@@ -1,5 +1,5 @@
-import Links from "./Links";
 import NavBar from "./NavBar";
 import { UpdatePost, DeletePost } from "./UpdateAndDeletePost";
+import Footer from "./Footer"
 
-export { Links, NavBar, UpdatePost, DeletePost };
+export {  NavBar, UpdatePost, DeletePost, Footer };

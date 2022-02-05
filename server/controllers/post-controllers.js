@@ -1,8 +1,34 @@
 const Post = require("../db/blog-model");
 
-createPost = (req, res) => {
-  const body = req.body;
+const fs = require('fs');
+const AWS = require('aws-sdk');
 
+const s3 = new AWS.S3({
+  accessKeyId: process.env.accessKeyId,
+  secretAccessKey: process.env.secretAccessKey
+});
+
+
+createPost = async (req, res) => {
+
+  let file = req.body.file
+
+  const ff = file.split(";base64,").pop()
+  const blob = Buffer.from(ff,'base64');
+  
+
+  const params = {
+    Bucket: 'knoll-troll-images',
+    Key: req.body.filename,
+    Body: blob,
+   };
+   s3.upload(params, function(error, data) {
+    if (error) console.log(error)
+    console.log(`File uploaded successfully at ${data.Location}`)
+});
+
+  const body = req.body;
+console.log()
   if (!body) {
     return res.status(400).json({
       success: false,

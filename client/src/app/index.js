@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { NavBar } from "../components";
+import { Footer, NavBar } from "../components";
 import {
   PostsList,
   PostsInsert,
@@ -30,10 +30,12 @@ class App extends Component {
           <Route path="/login" exact component={Login} />
           <Route exact path="/register" component={Register} />
           <Route path="/profile" component={Profile} />
-          <Route path="/about" component={About} />
+          <Route path="/about" exact component={About} />
           <Route path="/contactUs" component={ContactUs} />
           <Route path="/user/:name" component={OthersProfile} />
         </Switch>
+
+        <Footer/>
       </Router>
     );
   }

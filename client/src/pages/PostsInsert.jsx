@@ -1,60 +1,95 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import api from "../api";
 import AuthService from "../services/auth.service";
-class PostsInsert extends Component {
-  constructor(props) {
-    super(props);
+import axios from 'axios';
+import { useState } from "react";
 
-    this.state = {
-      title: "",
-      description: "",
-      content: "",
-      username: "",
-    };
+const PostsInsert = () => {
+  
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [content, setContent] = useState("");
+  const [username, setUsername] = useState("");
+  const [file, setFile] = useState("");
+  const [filename, setFilename] = useState("");
+
+ 
+  const convertBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file)
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      }
+      fileReader.onerror = (error) => {
+        reject(error);
+      }
+    })
   }
-  componentDidMount() {
+
+    const saveFile = async (e) => {
+
+        setFilename(e.target.files[0].name)
+        const file = e.target.files[0]
+        const base64 = await convertBase64(file)
+       setFile(base64);
+       
+       
+      };
+ 
+      //  uploadFile = async (e) => {
+      //   const formData = new FormData();
+      //   formData.append("file", file);
+      //   formData.append("fileName", filename);
+      //   try {
+      //     const res = await axios.post(
+      //       "http://localhost:3000/upload",
+      //       formData
+      //     );
+      //     console.log(res);
+      //   } catch (ex) {
+      //     console.log(ex);
+      //   }
+      // };
+
+  useEffect(() => {
     document.title = "Create Post";
     const user = AuthService.getCurrentUser();
 
     if (user) {
-      this.setState({
-        username: user.data.username,
-      });
+      setUsername(user.data.username);
     }
-  }
 
-  handleChangeInputTitle = async (event) => {
+  })
+
+  const handleChangeInputTitle = async (event) => {
     const title = event.target.value;
-    this.setState({ title });
+    setTitle( title );
   };
 
-  handleChangeInputDescription = async (event) => {
+  const handleChangeInputDescription = async (event) => {
     const description = event.target.value;
-    this.setState({ description });
+    setDescription( description );
   };
 
-  handleChangeInputContent = async (event) => {
+  const handleChangeInputContent = async (event) => {
     const content = event.target.value;
-    this.setState({ content });
+    setContent( content );
   };
 
-  handleIncludePost = async () => {
-    const { title, description, content, username } = this.state;
-    const payload = { title, description, content, username };
+  const handleIncludePost = async () => {
+    // const { title, description, content, username, file, fileName } = state;
+    const payload = { title, description, content, username, file, filename };
 
     await api.insertPost(payload).then((res) => {
       window.alert(`Post inserted successfully`);
-      this.setState({
-        title: "",
-        description: "",
-        content: "",
-      });
+      
     });
   };
 
-  render() {
-    const { title, description, content, username } = this.state;
-    return (
+  return( 
+    // const { title, description, content, username} = state;
+    
       <div className="no-gutters">
         <div className="row justify-content-center">
           <div className="col col-md-6">
@@ -67,7 +102,7 @@ class PostsInsert extends Component {
                 type="text"
                 className="form-control w-50 m-1"
                 value={title}
-                onChange={this.handleChangeInputTitle}
+                onChange={handleChangeInputTitle}
               />
 
               <label className="w-100 m-2">Description: </label>
@@ -75,7 +110,7 @@ class PostsInsert extends Component {
                 type="text"
                 className="form-control w-75 m-1"
                 value={description}
-                onChange={this.handleChangeInputDescription}
+                onChange={handleChangeInputDescription}
               />
 
               <label className="w-100 m-2">Content: </label>
@@ -84,12 +119,17 @@ class PostsInsert extends Component {
                 rows="3"
                 className="form-control ml-1"
                 value={content}
-                onChange={this.handleChangeInputContent}
+                onChange={handleChangeInputContent}
               />
             </div>
+
+            <input type="file" onChange={(e) => {saveFile(e)}} />
+            {/* <button onClick={uploadFile}>Upload</button> */}
+
+
             <button
               className="btn btn-primary m-1"
-              onClick={this.handleIncludePost}
+              onClick={handleIncludePost}
             >
               Add Post
             </button>
@@ -99,8 +139,8 @@ class PostsInsert extends Component {
           </div>
         </div>
       </div>
-    );
-  }
-}
+    
+  
+  )}
 
 export default PostsInsert;

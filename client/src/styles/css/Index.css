@@ -320,7 +320,7 @@ ul {
     padding-right: 15px;
 }
 
-.tm-copyright { text-align: right; }
+.tm-copyright { text-align: center; }
 
 /* Single Post page */
 hr.tm-hr-primary { border-top: 5px solid #0CC; }
@@ -434,8 +434,8 @@ a:hover figcaption { color: #056767; }
     .tm-header { width: 320px; }
 
     .tm-main {
-        margin-left: 320px;
-        width: calc(100% - 320px);
+        margin-left: 280px;
+        width: calc(100% - 280px);
     }
 }
 
@@ -491,7 +491,7 @@ a:hover figcaption { color: #056767; }
 
     .tm-main {
         margin-left: 0;
-        padding: 50px 40px;
+        padding: 20px 40px;
         width: 100%;
     }
 
