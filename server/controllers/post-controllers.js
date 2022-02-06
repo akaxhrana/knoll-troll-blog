@@ -13,22 +13,26 @@ createPost = async (req, res) => {
 
   let file = req.body.file
 
-  const ff = file.split(";base64,").pop()
-  const blob = Buffer.from(ff,'base64');
+  const imgData = file.split(";base64,").pop()
+  const imgToUpload = Buffer.from(imgData,'base64');
   
+  // creating params for S3 Bucket 
 
   const params = {
     Bucket: 'knoll-troll-images',
     Key: req.body.filename,
-    Body: blob,
+    Body: imgToUpload,
    };
+
+   // uploading to S3 Bucket
    s3.upload(params, function(error, data) {
     if (error) console.log(error)
     console.log(`File uploaded successfully at ${data.Location}`)
-});
 
-  const body = req.body;
-console.log()
+    // `data.Location` returns the url to the S3 Buket object
+    const body = req.body;
+    body.imgLocation = data.Location
+    
   if (!body) {
     return res.status(400).json({
       success: false,
@@ -57,6 +61,9 @@ console.log()
         message: "Post not created!",
       });
     });
+});
+
+  
 };
 
 updatePost = async (req, res) => {

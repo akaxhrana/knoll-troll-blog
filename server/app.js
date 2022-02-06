@@ -5,7 +5,6 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const fileUpload = require('express-fileupload');
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -16,7 +15,6 @@ const app = express();
 
 app.use(cors());
 app.use(logger("dev"));
-app.use(fileUpload()); // Don't forget this line!
 
 app.use(bodyParser.urlencoded({ extended: true , limit: '50mb'}));
 app.use(express.json({limit: '50mb'}));

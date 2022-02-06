@@ -8,6 +8,7 @@ const Post = new Schema(
     content: { type: String, required: true },
     created_at: { type: Date, required: true, default: Date },
     username: { type: String, required: true },
+    imgLocation: {type:String, required: true}
   },
   { timestamps: true }
 );

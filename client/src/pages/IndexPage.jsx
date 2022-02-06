@@ -14,9 +14,18 @@ export class Index extends Component {
         offset: 0,
         perPage: 6,
         currentPage: 0,
+        img:[]
       };
       this.handlePageClick = this.handlePageClick.bind(this);
     }
+
+
+    fetchImage = async (e) => {
+      const res = await fetch(imageUrl);
+      const imageBlob = await res.blob();
+      const imageObjectURL = URL.createObjectURL(imageBlob);
+      setImg(imageObjectURL);
+    };
   
     receivedData = async () => {
       await api.getAllPosts().then((res) => {
@@ -31,7 +40,7 @@ export class Index extends Component {
   
         const postData = slice.map((pd) => (
           
-          <div className="col-12 col-md-6 tm-post">
+          <div className="col-12 col-md-6 tm-post" key={pd.created_at}>
      {/* <div className="row">
               <div
                 key={pd._id}
@@ -63,7 +72,7 @@ export class Index extends Component {
                     <hr className="tm-hr-primary"/>
                     <a href="post.html" className="effect-lily tm-post-link tm-pt-10">
                         <div className="tm-post-link-inner">
-                            <img src="img/img-04.jpg" alt="Image" className="img-fluid"/>
+                            <img src={pd.imgLocation} alt="Image" className="img-fluid" style={{height:"320px"}}/>
                         </div>
                         <h2 className="tm-pt-20 tm-color-primary tm-post-title">{pd.title}</h2>
                     </a>                    
@@ -80,12 +89,12 @@ export class Index extends Component {
                     <hr/>
                     <div className="d-flex justify-content-between">
                         <span>72 comments</span>
-                        <span><a className="text-decoration-none text-secondary">
+                        <span>
                       <Link to={`/user/${pd.username}`} query={{ name: "query" }}>
                         {" "}
                         {pd.username}
                       </Link>
-                    </a></span>
+                    </span>
                     </div>
                 {/* </article> */}
                 </div>

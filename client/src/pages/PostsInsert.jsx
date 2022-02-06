@@ -37,20 +37,6 @@ const PostsInsert = () => {
        
       };
  
-      //  uploadFile = async (e) => {
-      //   const formData = new FormData();
-      //   formData.append("file", file);
-      //   formData.append("fileName", filename);
-      //   try {
-      //     const res = await axios.post(
-      //       "http://localhost:3000/upload",
-      //       formData
-      //     );
-      //     console.log(res);
-      //   } catch (ex) {
-      //     console.log(ex);
-      //   }
-      // };
 
   useEffect(() => {
     document.title = "Create Post";
@@ -88,7 +74,6 @@ const PostsInsert = () => {
   };
 
   return( 
-    // const { title, description, content, username} = state;
     
       <div className="no-gutters">
         <div className="row justify-content-center">

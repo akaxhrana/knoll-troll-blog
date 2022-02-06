@@ -6,9 +6,8 @@ A blogging platform which focuses on daily progressive blogs.
   - ReactJs
   - NodeJs
   - MongoDB
-  - AWS
-  - pm2
-  - nginx
+  - AWS S3
+
 
 Updating soon!
 
