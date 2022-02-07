@@ -40,7 +40,7 @@ export class Index extends Component {
   
         const postData = slice.map((pd) => (
           
-          <div className="col-12 col-md-6 tm-post" key={pd.created_at}>
+          <div className="col-12 col-md-6 tm-post" key={pd._id}>
      {/* <div className="row">
               <div
                 key={pd._id}
@@ -70,12 +70,19 @@ export class Index extends Component {
             </div> */}
           {/* <article className="col-12 col-md-6 tm-post"> */}
                     <hr className="tm-hr-primary"/>
+
+                    {/* <Link to={`/post/${pd._id}`} state={{ from: 'occupation' }}> */}
+                      <Link to={{
+                        pathname:`/post/${pd._id}`,
+                        state:`${pd._id}`
+                      }}>
                     <a href="post.html" className="effect-lily tm-post-link tm-pt-10">
                         <div className="tm-post-link-inner">
                             <img src={pd.imgLocation} alt="Image" className="img-fluid" style={{height:"320px"}}/>
                         </div>
                         <h2 className="tm-pt-20 tm-color-primary tm-post-title">{pd.title}</h2>
                     </a>                    
+                    </Link>
                     <p className="tm-pt-20">
                     {pd.description}
                     </p>

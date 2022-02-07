@@ -8,6 +8,7 @@ import Index from "./IndexPage";
 import About from "./AboutPage.jsx";
 import ContactUs from "./ContactUsPage.jsx";
 import OthersProfile from "./OthersProfile";
+import PostDetail from "./PostDetail";
 export {
   PostsList,
   PostsInsert,
@@ -19,4 +20,5 @@ export {
   About,
   ContactUs,
   OthersProfile,
+  PostDetail
 };

@@ -61,11 +61,7 @@ class NavBar extends Component {
 
         <Collapse>
           <List>
-            <Item>
-              <Link to="/posts/list" className="nav-link">
-                All Posts
-              </Link>
-            </Item>
+
             {this.state.currentUser && (
               <Item>
                 <Link to="/posts/create" className="nav-link">
@@ -115,8 +111,8 @@ class NavBar extends Component {
           )} */}
 
           {this.state.currentUser && (
-            <div className="">
-              <p className=" m-2 d-inline ">
+            <div>
+              <p className="d-inline ">
                 Logged in as:{" "}
                 <a className="text-light text-decoration-none" href="/profile">
                   {this.state.currentUser}
@@ -124,7 +120,7 @@ class NavBar extends Component {
                 &nbsp;
               </p>
 
-              <button className="btn btn-sm" onClick={this.logOut} style={{ backgroundColor: '#00CCCC',
+              <button className="btn btn-sm " onClick={this.logOut} style={{ backgroundColor: '#00CCCC',
       }}>
                 Log Out
               </button>

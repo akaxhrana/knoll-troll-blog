@@ -12,6 +12,7 @@ import {
   About,
   ContactUs,
   OthersProfile,
+  PostDetail
 } from "../pages";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -27,6 +28,7 @@ class App extends Component {
           <Route path="/posts/list" exact component={PostsList} />
           <Route path="/posts/create" exact component={PostsInsert} />
           <Route path="/posts/update/:id" exact component={PostsUpdate} />
+          <Route path="/post/:id" exact component={PostDetail}/> 
           <Route path="/login" exact component={Login} />
           <Route exact path="/register" component={Register} />
           <Route path="/profile" component={Profile} />
