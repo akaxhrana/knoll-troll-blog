@@ -89,7 +89,7 @@ export class Index extends Component {
                     <div className="d-flex justify-content-between tm-pt-30">
                         <span className="tm-color-primary">Posted at:</span>
                         <span className="tm-color-primary">{Moment(Moment(pd.created_at).toString()).format(
-                      "DD-MM-YYYY hh:mm A"
+                      "DD-MM-YYYY"
                     )}
                     </span>
                     </div>

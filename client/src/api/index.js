@@ -10,6 +10,10 @@ export const updatePostById = (id, payload) => api.put(`/post/${id}`, payload);
 export const deletePostById = (id) => api.delete(`/post/${id}`);
 export const getPostById = (id) => api.get(`/post/${id}`);
 export const getPostByName = (name) => api.get(`/posts/${name}`);
+
+export const newComment = (payload) => api.post(`/comment`, payload);
+export const getComments = (id) => api.get(`/comment/${id}`);
+
 const apis = {
   insertPost,
   getAllPosts,
@@ -17,6 +21,8 @@ const apis = {
   deletePostById,
   getPostById,
   getPostByName,
+  getComments,
+  newComment
 };
 
 export default apis;

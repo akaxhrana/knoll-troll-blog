@@ -1,13 +1,12 @@
-const Post = require("../db/blog-model");
+const {User, Blog} = require("../db/knoll-model");
 
-const fs = require('fs');
-const AWS = require('aws-sdk');
+const fs = require('fs')
+const AWS = require("aws-sdk");
 
 const s3 = new AWS.S3({
-  accessKeyId: process.env.accessKeyId,
-  secretAccessKey: process.env.secretAccessKey
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
 });
-
 
 createPost = async (req, res) => {
 
@@ -32,7 +31,7 @@ createPost = async (req, res) => {
     // `data.Location` returns the url to the S3 Buket object
     const body = req.body;
     body.imgLocation = data.Location
-    
+
   if (!body) {
     return res.status(400).json({
       success: false,
@@ -40,31 +39,36 @@ createPost = async (req, res) => {
     });
   }
 
-  const post = new Post(body);
+  const post = new Blog(body);
 
   if (!post) {
     return res.status(400).json({ success: false, error: err });
   }
 
-  post
-    .save()
-    .then(() => {
-      return res.status(201).json({
-        success: true,
-        id: post._id,
-        message: "Post created!",
+  post.save().then(post => {
+    User.findById({ _id: req.body.usernameId }, (err, user)=>{
+      if (err) return res.send(err);
+      user.posts.push(post._id);
+      user.save(function(err) {
+        if (err) return res.send(err);
+        res.json({ status : 'Post added successfully to the user' });
       });
     })
-    .catch((error) => {
-      return res.status(400).json({
-        error,
-        message: "Post not created!",
-      });
-    });
-});
-
-  
-};
+    }).then(() => {
+            return res.status(201).json({
+              success: true,
+              id: post._id,
+              message: "Post created!",
+            });
+          })
+          .catch((error) => {
+            return res.status(400).json({
+              error,
+              message: "Post not created!",
+            });
+          });;
+  });
+}
 
 updatePost = async (req, res) => {
   const body = req.body;
@@ -106,7 +110,7 @@ updatePost = async (req, res) => {
 };
 
 deletePost = async (req, res) => {
-  await Post.findOneAndDelete({ _id: req.params.id }, (err, post) => {
+  await Blog.findOneAndDelete({ _id: req.params.id }, (err, post) => {
     if (err) {
       return res.status(400).json({ success: false, error: err });
     }
@@ -119,21 +123,28 @@ deletePost = async (req, res) => {
   }).catch((err) => console.log(err));
 };
 
-getPostById = async (req, res) => {
-  await Post.findOne({ _id: req.params.id }, (err, post) => {
-    if (err) {
-      return res.status(400).json({ success: false, error: err });
-    }
+// getPostById = async (req, res) => {
+//   await Blog.findOne({ _id: req.params.id }, (err, post) => {
+//     if (err) {
+//       return res.status(400).json({ success: false, error: err });
+//     }
 
-    if (!post) {
-      return res.status(404).json({ success: false, error: `Post not found` });
-    }
+//     if (!post) {
+//       return res.status(404).json({ success: false, error: `Post not found` });
+//     }
+//     return res.status(200).json({ success: true, data: post });
+//   }).catch((err) => console.log(err));
+// };
+
+getPostById = async(req, res) => {
+  await Blog.findOne({_id: req.params.id}).populate("comments").then(post => {
     return res.status(200).json({ success: true, data: post });
-  }).catch((err) => console.log(err));
-};
+ }).catch((err) => console.log(err));
+}
+
 
 getPosts = async (req, res) => {
-  await Post.find({}, null, { sort: { createdAt: -1 } }, (err, posts) => {
+  await Blog.find({}, null, { sort: { createdAt: -1 } }, (err, posts) => {
     if (err) {
       return res.status(400).json({ success: false, error: err });
     }
@@ -145,7 +156,7 @@ getPosts = async (req, res) => {
 };
 
 getPostsByName = async (req, res) => {
-  await Post.find(
+  await Blog.find(
     { username: req.params.name },
     null,
     { sort: { createdAt: -1 } },
@@ -165,9 +176,9 @@ getPostsByName = async (req, res) => {
 
 module.exports = {
   createPost,
+  getPosts,
   updatePost,
   deletePost,
-  getPosts,
   getPostById,
   getPostsByName,
 };

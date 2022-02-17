@@ -10,6 +10,7 @@ const PostsInsert = () => {
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
   const [username, setUsername] = useState("");
+  const [usernameId, setUsernameID] = useState("");
   const [file, setFile] = useState("");
   const [filename, setFilename] = useState("");
 
@@ -44,6 +45,7 @@ const PostsInsert = () => {
 
     if (user) {
       setUsername(user.data.username);
+      setUsernameID(user.data._id);
     }
 
   })
@@ -65,7 +67,7 @@ const PostsInsert = () => {
 
   const handleIncludePost = async () => {
     // const { title, description, content, username, file, fileName } = state;
-    const payload = { title, description, content, username, file, filename };
+    const payload = { title, description, content, username,usernameId, file, filename };
 
     await api.insertPost(payload).then((res) => {
       window.alert(`Post inserted successfully`);

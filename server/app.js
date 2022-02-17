@@ -11,6 +11,7 @@ dotenv.config();
 const db = require("./db/database");
 const postRouter = require("./routes/routes");
 
+
 const app = express();
 
 app.use(cors());
@@ -28,6 +29,7 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 app.get("/", (req, res) => {
   res.send("Hello World");
 });
+
 
 app.use("/api", postRouter);
 
